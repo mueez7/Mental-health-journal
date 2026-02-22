@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-lumina-dark: #121212;
+  --color-lumina-black: #000000;
+  --color-lumina-bg: #FDFCF9;
+
+  --color-lumina-blue-bg: #B6CAEB;
+  --color-lumina-blue-text: #8AA2C8;
+  --color-lumina-blue-border: #8AA2C8;
+
+  --color-lumina-pink-bg: #F5B8DA;
+  --color-lumina-pink-text: #E09CC3;
+  --color-lumina-pink-border: #E09CC3;
+
+  --color-lumina-yellow-bg: #F7D768;
+  --color-lumina-yellow-text: #E8C84D;
+  --color-lumina-yellow-border: #E8C84D;
+
+  --color-lumina-green-bg: #9AAB63;
+  --color-lumina-green-text: #808E53;
+  --color-lumina-green-border: #808E53;
+
+  --font-sans: 'Inter', sans-serif;
+}
+
+@layer utilities {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.95);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes gradientFlow {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}
+
+body {
+  background-color: var(--color-lumina-bg);
+  color: var(--color-lumina-dark);
+  font-family: var(--font-sans);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
