@@ -11,7 +11,7 @@ const prompts = [
     "If you could give yourself one piece of advice today, what would it be?"
 ];
 
-const WriteEntry = () => {
+const WriteEntry = ({ onEntrySaved }) => {
     const [text, setText] = useState('');
     const [prompt, setPrompt] = useState(prompts[0]);
     const textareaRef = useRef(null);
@@ -44,6 +44,9 @@ const WriteEntry = () => {
                 time_spent: Math.max(1, Math.floor((Date.now() - startTimeRef.current) / 60000))
             };
             await api.post('/entries/', entryData);
+            if (onEntrySaved) {
+                onEntrySaved();
+            }
             navigate('/timeline');
         } catch (error) {
             console.error('Failed to save entry', error);
@@ -89,7 +92,7 @@ const WriteEntry = () => {
                 />
 
                 {/* Character count / status */}
-                <div className="absolute bottom-4 left-0 text-sm font-medium text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute bottom-[-20px] left-0 text-sm font-medium text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
                     {text.length} characters
                 </div>
             </div>

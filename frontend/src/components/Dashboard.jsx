@@ -5,10 +5,20 @@ import { motion } from 'framer-motion';
 import api from '../lib/api';
 import GlobalLoader from './GlobalLoader';
 
-const Dashboard = ({ onNavigate }) => {
+const Dashboard = ({ onNavigate, refreshTrigger, user }) => {
     const [entries, setEntries] = useState([]);
     const [selectedEntry, setSelectedEntry] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const greeting = useMemo(() => {
+        const hour = new Date().getHours();
+        let timeGreeting = 'Good evening';
+        if (hour >= 5 && hour < 12) timeGreeting = 'Good morning';
+        else if (hour >= 12 && hour < 17) timeGreeting = 'Good afternoon';
+
+        const name = user?.user_metadata?.display_name || user?.email?.split('@')[0] || '';
+        return name ? `${timeGreeting}, ${name}.` : `${timeGreeting}.`;
+    }, [user]);
 
     useEffect(() => {
         const fetchEntries = async () => {
@@ -17,6 +27,7 @@ const Dashboard = ({ onNavigate }) => {
                 const res = await api.get('/entries/');
                 const data = res.data || [];
                 setEntries(data);
+                // Update selectedEntry only if there wasn't one selected or its ID is still valid, else default to first
                 if (data.length > 0) setSelectedEntry(data[0]);
             } catch (error) {
                 console.error('Failed to fetch entries', error);
@@ -25,7 +36,7 @@ const Dashboard = ({ onNavigate }) => {
             }
         };
         fetchEntries();
-    }, []);
+    }, [refreshTrigger]);
 
     const stats = useMemo(() => {
         if (!entries || entries.length === 0) {
@@ -100,7 +111,7 @@ const Dashboard = ({ onNavigate }) => {
             {/* Main Content */}
             <div className="flex-1 space-y-8">
                 <div>
-                    <h1 className="text-3xl font-semibold text-lumina-dark dark:text-gray-100 tracking-tight">Good morning.</h1>
+                    <h1 className="text-3xl font-semibold text-lumina-dark dark:text-gray-100 tracking-tight">{greeting}</h1>
                     <p className="text-gray-500 dark:text-gray-400 mt-1">Here is a snapshot of your recent reflections.</p>
                 </div>
 

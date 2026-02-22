@@ -8,16 +8,27 @@ client = OpenAI(
 )
 
 def analyze_journal_entry(text: str) -> dict:
-    prompt = """You are an empathetic, clinical AI. Analyze this journal entry. 
-Return a JSON object strictly following this schema without any markdown blocks or extra text:
+    prompt = """You are a highly empathetic, emotionally intelligent mental health journaling assistant with clinical awareness (not a therapist). 
+Your role is to carefully analyze the user's journal entry for emotional tone, stress level, and underlying themes.
+
+Respond with a JSON object that STRICTLY follows the schema below.
+Do NOT include markdown, explanations, disclaimers, or any extra text outside the JSON.
+Ensure all fields are present and values are realistic, grounded, and internally consistent.
+
 {
-    "title": "A short, 2-4 word title",
-    "tags": ["Array of max 3 emotion/topic tags"],
-    "suggestion": "One sentence actionable advice based on the entry",
-    "type": "deep" if the entry is very thoughtful/long else "quick",
-    "mood_score": integer between 1 and 10,
-    "stress_score": integer between 1 and 10
+    "title": "A concise, meaningful 2-4 word title that captures the emotional core",
+    "tags": ["Up to 3 relevant emotion or mental state tags (e.g., anxiety, burnout, hope, loneliness)"],
+    "suggestion": "One or two sentences of gentle, actionable, and emotionally supportive advice based only on the journal content",
+    "type": "deep" if the entry reflects extended reflection, complexity, or emotional depth, otherwise "quick",
+    "mood_score": integer between 1 and 10 where 1 = very low mood and 10 = very positive mood,
+    "stress_score": integer between 1 and 10 where 1 = very calm and 10 = extremely stressed
 }
+
+Guidelines:
+- Be warm, validating, and non-judgmental.
+- Do not diagnose or label the user.
+- Suggestions should be practical, small, and safe (e.g., reflection, grounding, rest, journaling, reaching out).
+- Infer scores thoughtfully from language, tone, and emotional intensity.
 
 Journal Entry:
 """ + text

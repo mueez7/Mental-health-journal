@@ -16,8 +16,15 @@ function App() {
   const [loadingInitial, setLoadingInitial] = useState(true);
   // Tracks which pages have been visited — once visited, a page stays mounted forever
   const [visitedViews, setVisitedViews] = useState(new Set());
+  // Triggers a refetch in mounted components when a new entry is saved
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleEntrySaved = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -100,7 +107,7 @@ function App() {
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className="h-full w-full"
         >
-          <Dashboard onNavigate={navigateToView} />
+          <Dashboard onNavigate={navigateToView} refreshTrigger={refreshTrigger} user={session?.user} />
         </motion.div>
       )}
       {visitedViews.has('WRITE') && (
@@ -110,7 +117,7 @@ function App() {
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className="h-full w-full"
         >
-          <WriteEntry />
+          <WriteEntry onEntrySaved={handleEntrySaved} />
         </motion.div>
       )}
       {visitedViews.has('TIMELINE') && (
@@ -120,7 +127,7 @@ function App() {
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className="h-full w-full"
         >
-          <Timeline />
+          <Timeline refreshTrigger={refreshTrigger} />
         </motion.div>
       )}
       {visitedViews.has('INSIGHTS') && (

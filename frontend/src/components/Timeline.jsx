@@ -6,7 +6,7 @@ import GlobalLoader from './GlobalLoader';
 
 const filters = ['All', 'Positive', 'Anxious', 'Deep', 'Quick', 'Creative'];
 
-const Timeline = () => {
+const Timeline = ({ refreshTrigger }) => {
     const [entries, setEntries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeFilter, setActiveFilter] = useState('All');
@@ -25,7 +25,7 @@ const Timeline = () => {
             }
         };
         fetchEntries();
-    }, []);
+    }, [refreshTrigger]);
 
     // Filtering logic
     const filteredEntries = entries.filter(entry => {
@@ -66,7 +66,7 @@ const Timeline = () => {
             className="max-w-5xl mx-auto px-6 py-6 lg:px-12 lg:py-12 space-y-8"
         >
             {/* Header & Controls */}
-            <div className="space-y-6 sticky top-0 bg-lumina-bg/95 dark:bg-lumina-dark/95 backdrop-blur-xl pt-6 lg:pt-12 pb-6 z-30 -mx-6 px-6 lg:-mx-12 lg:px-12 border-b border-gray-100 dark:border-gray-800 transition-colors">
+            <div className="space-y-6 sticky top-0 bg-lumina-bg/95 dark:bg-lumina-dark/95 backdrop-blur-xl pt-6 lg:pt-12 pb-6 z-20 -mx-6 px-6 lg:-mx-12 lg:px-12 border-b border-gray-100 dark:border-gray-800 transition-colors">
                 <div>
                     <h1 className="text-3xl font-semibold text-lumina-dark dark:text-gray-100 tracking-tight">Timeline</h1>
                     <p className="text-gray-500 dark:text-gray-400 mt-1">Review your past reflections and insights.</p>

@@ -88,7 +88,7 @@ const AppShell = ({ children, currentView, onNavigate, onLogout, user }) => {
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col min-w-0">
                 {/* Top Header */}
-                <header className="h-16 bg-gradient-to-r from-blue-50/80 via-purple-50/80 to-teal-50/80 dark:from-lumina-dark dark:via-gray-900/80 dark:to-lumina-dark bg-[length:200%_200%] animate-[gradientFlow_8s_ease-in-out_infinite] backdrop-blur-xl border-b border-gray-100 dark:border-gray-800 flex items-center justify-between px-4 lg:px-8 z-10 sticky top-0">
+                <header className="h-16 bg-gradient-to-r from-blue-50/80 via-purple-50/80 to-teal-50/80 dark:from-lumina-dark dark:via-gray-900/80 dark:to-lumina-dark bg-[length:200%_200%] animate-[gradientFlow_8s_ease-in-out_infinite] backdrop-blur-xl border-b border-gray-100 dark:border-gray-800 flex items-center justify-between px-4 lg:px-8 z-40 sticky top-0">
                     <div className="flex items-center gap-4">
                         <button
                             className="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg"

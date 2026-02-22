@@ -3,7 +3,7 @@ import loadGif from '../assets/load.gif';
 
 const GlobalLoader = ({ message = "Loading your journal..." }) => {
     return (
-        <div className="h-screen w-screen flex flex-col items-center justify-center bg-lumina-bg relative overflow-hidden">
+        <div className="h-screen w-full flex flex-col items-center justify-center bg-lumina-bg relative overflow-hidden">
             {/* Subtle background glow effect equivalent to Lumina's styling */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute -top-[40%] -left-[20%] w-[70%] h-[70%] bg-lumina-primary/10 blur-[120px] rounded-full mix-blend-multiply" />
