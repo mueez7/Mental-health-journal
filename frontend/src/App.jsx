@@ -66,13 +66,13 @@ function App() {
       {/* Protected Routes directly inside AppShell */}
       <Route path="/*" element={
         session ? (
-          <AppShell currentView={currentView} onNavigate={navigateToView} onLogout={handleLogout}>
+          <AppShell currentView={currentView} onNavigate={navigateToView} onLogout={handleLogout} user={session?.user}>
             <Routes>
               <Route path="/dashboard" element={<Dashboard onNavigate={navigateToView} />} />
               <Route path="/write" element={<WriteEntry />} />
               <Route path="/timeline" element={<Timeline />} />
               <Route path="/insights" element={<Insights />} />
-              <Route path="/settings" element={<Settings />} />
+              <Route path="/settings" element={<Settings user={session?.user} />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
           </AppShell>

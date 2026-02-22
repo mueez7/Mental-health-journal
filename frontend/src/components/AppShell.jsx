@@ -22,7 +22,7 @@ const navLinks = [
     { id: 'SETTINGS', label: 'Settings', icon: Settings },
 ];
 
-const AppShell = ({ children, currentView, onNavigate, onLogout }) => {
+const AppShell = ({ children, currentView, onNavigate, onLogout, user }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -135,9 +135,13 @@ const AppShell = ({ children, currentView, onNavigate, onLogout }) => {
                         <div className="relative">
                             <button
                                 onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                                className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center border hover:ring-2 ring-offset-1 ring-blue-300 cursor-pointer transition-all focus:outline-none"
+                                className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center border hover:ring-2 ring-offset-1 ring-blue-300 cursor-pointer transition-all focus:outline-none overflow-hidden"
                             >
-                                <User size={16} className="text-blue-600" />
+                                {user?.user_metadata?.avatar_url ? (
+                                    <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                                ) : (
+                                    <User size={16} className="text-blue-600" />
+                                )}
                             </button>
 
                             {/* Profile Dropdown */}
@@ -145,12 +149,18 @@ const AppShell = ({ children, currentView, onNavigate, onLogout }) => {
                                 <div className="absolute right-0 mt-2 w-60 bg-white dark:bg-gray-800 shadow-xl rounded-2xl border border-gray-100 dark:border-gray-700 z-50 animate-[slideDown_0.2s_ease-out] overflow-hidden">
                                     {/* User Info */}
                                     <div className="p-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700/50 flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center shrink-0">
-                                            <User size={18} className="text-blue-600 dark:text-blue-400" />
+                                        <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center shrink-0 overflow-hidden">
+                                            {user?.user_metadata?.avatar_url ? (
+                                                <img src={user.user_metadata.avatar_url} alt="Profile Avatar" className="w-full h-full object-cover" />
+                                            ) : (
+                                                <User size={18} className="text-blue-600 dark:text-blue-400" />
+                                            )}
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-lumina-dark dark:text-gray-100 text-sm leading-tight">Lumina User</p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">user@lumina.app</p>
+                                            <p className="font-semibold text-lumina-dark dark:text-gray-100 text-sm leading-tight">
+                                                {user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'Lumina User'}
+                                            </p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{user?.email}</p>
                                         </div>
                                     </div>
 

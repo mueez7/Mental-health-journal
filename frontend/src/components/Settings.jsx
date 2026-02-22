@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { User, Bell, Shield, Moon, Palette, Crown, ChevronRight } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import { supabase } from '../lib/supabaseClient';
 
-const Settings = () => {
+const Settings = ({ user }) => {
     const [activeTab, setActiveTab] = useState('account');
     const { isDarkMode, toggleTheme } = useTheme();
+
+    // User State
+    const [displayName, setDisplayName] = useState(user?.user_metadata?.display_name || user?.email?.split('@')[0] || '');
+    const [email, setEmail] = useState(user?.email || '');
+    const [avatarUrl, setAvatarUrl] = useState(user?.user_metadata?.avatar_url || null);
+    const [isSaving, setIsSaving] = useState(false);
 
     const tabs = [
         { id: 'account', label: 'Account', icon: User },
@@ -13,6 +20,66 @@ const Settings = () => {
         { id: 'appearance', label: 'Appearance', icon: Palette },
         { id: 'subscription', label: 'Subscription', icon: Crown },
     ];
+
+    const handleAvatarUpload = async (event) => {
+        try {
+            setIsSaving(true);
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Generate unique filename
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${user.id}-${Math.random()}.${fileExt}`;
+
+            // We attempt to upload it to 'avatars' bucket if configured
+            // Or use a custom storage bucket path
+            const { error: uploadError, data } = await supabase.storage
+                .from('avatars')
+                .upload(fileName, file, { upsert: true });
+
+            if (uploadError) {
+                // If 'avatars' bucket isn't set up, we alert the user
+                alert(`Error uploading avatar: ${uploadError.message}. Make sure an 'avatars' storage bucket is public and allows uploads.`);
+                return;
+            }
+
+            // Get Public URL
+            const { data: { publicUrl } } = supabase.storage
+                .from('avatars')
+                .getPublicUrl(fileName);
+
+            // Update user metadata
+            const { error: updateError } = await supabase.auth.updateUser({
+                data: { avatar_url: publicUrl }
+            });
+
+            if (updateError) throw updateError;
+
+            setAvatarUrl(publicUrl);
+            alert('Profile picture updated successfully!');
+
+        } catch (error) {
+            alert(error.message || 'An error occurred uploading the profile picture.');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const handleSaveProfile = async (e) => {
+        e.preventDefault();
+        try {
+            setIsSaving(true);
+            const { error } = await supabase.auth.updateUser({
+                data: { display_name: displayName }
+            });
+            if (error) throw error;
+            alert('Profile updated successfully!');
+        } catch (error) {
+            alert(error.message || 'An error occurred updating the profile.');
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     return (
         <div className="max-w-5xl mx-auto p-6 lg:p-12 min-h-full flex flex-col md:flex-row gap-8">
@@ -54,29 +121,63 @@ const Settings = () => {
                         <div>
                             <h2 className="text-xl font-semibold text-lumina-dark dark:text-gray-100 mb-4 tracking-tight">Account Information</h2>
                             <div className="flex items-center gap-6 mb-8">
-                                <div className="w-20 h-20 rounded-full bg-lumina-blue-bg/40 dark:bg-lumina-blue-bg/20 text-lumina-blue-text dark:text-blue-300 flex items-center justify-center border-2 border-white dark:border-gray-800 shadow-sm text-3xl font-bold transition-colors">
-                                    J
+                                <div className="w-20 h-20 rounded-full bg-lumina-blue-bg/40 dark:bg-lumina-blue-bg/20 text-lumina-blue-text dark:text-blue-300 flex items-center justify-center border-2 border-white dark:border-gray-800 shadow-sm text-3xl font-bold transition-colors overflow-hidden shrink-0">
+                                    {avatarUrl ? (
+                                        <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                                    ) : (
+                                        displayName.charAt(0).toUpperCase() || 'U'
+                                    )}
                                 </div>
                                 <div>
-                                    <h3 className="text-lg font-medium text-lumina-dark dark:text-gray-100">Jordan Doe</h3>
-                                    <p className="text-gray-500 dark:text-gray-400 text-sm">jordan@example.com</p>
-                                    <button className="text-xs font-semibold text-lumina-blue-border uppercase tracking-wider mt-2 hover:text-lumina-dark transition-colors">
-                                        Change Avatar
-                                    </button>
+                                    <h3 className="text-lg font-medium text-lumina-dark dark:text-gray-100">
+                                        {displayName || 'Lumina User'}
+                                    </h3>
+                                    <p className="text-gray-500 dark:text-gray-400 text-sm">{email}</p>
+
+                                    <div className="relative mt-2">
+                                        <input
+                                            type="file"
+                                            id="avatarUpload"
+                                            accept="image/*"
+                                            onChange={handleAvatarUpload}
+                                            disabled={isSaving}
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                                        />
+                                        <button className="text-xs font-semibold text-lumina-blue-border uppercase tracking-wider hover:text-lumina-dark transition-colors pointer-events-none disabled:opacity-50">
+                                            {isSaving ? 'Uploading...' : 'Change Avatar'}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
-                            <form className="space-y-5 max-w-md">
+                            <form className="space-y-5 max-w-md" onSubmit={handleSaveProfile}>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Display Name</label>
-                                    <input type="text" defaultValue="Jordan Doe" className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-lumina-blue-border text-lumina-dark dark:text-gray-100 transition-all text-sm" />
+                                    <input
+                                        type="text"
+                                        value={displayName}
+                                        onChange={(e) => setDisplayName(e.target.value)}
+                                        className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-lumina-blue-border text-lumina-dark dark:text-gray-100 transition-all text-sm"
+                                        required
+                                    />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
-                                    <input type="email" defaultValue="jordan@example.com" className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-lumina-blue-border text-lumina-dark dark:text-gray-100 transition-all text-sm" />
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        disabled
+                                        readOnly
+                                        className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-500 transition-all text-sm cursor-not-allowed opacity-80"
+                                        title="Email cannot be changed directly here"
+                                    />
                                 </div>
-                                <button type="button" className="bg-lumina-dark dark:bg-gray-100 text-white dark:text-lumina-dark px-6 py-2.5 rounded-xl font-medium text-sm hover:bg-black dark:hover:bg-white transition-all shadow-sm">
-                                    Save Changes
+                                <button
+                                    type="submit"
+                                    disabled={isSaving}
+                                    className="bg-lumina-dark dark:bg-gray-100 text-white dark:text-lumina-dark px-6 py-2.5 rounded-xl font-medium text-sm hover:bg-black dark:hover:bg-white transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
+                                >
+                                    {isSaving ? 'Saving...' : 'Save Changes'}
                                 </button>
                             </form>
                         </div>

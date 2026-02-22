@@ -6,6 +6,7 @@ const Login = ({ onLogin }) => {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [displayName, setDisplayName] = useState('');
     const [error, setError] = useState(null);
     const [isSignUp, setIsSignUp] = useState(false);
 
@@ -19,6 +20,11 @@ const Login = ({ onLogin }) => {
                 const { error } = await supabase.auth.signUp({
                     email,
                     password,
+                    options: {
+                        data: {
+                            display_name: displayName || null,
+                        }
+                    }
                 });
                 if (error) throw error;
                 alert('Success! Check your email to confirm your account, or login directly if auto-confirm is enabled.');
@@ -56,14 +62,30 @@ const Login = ({ onLogin }) => {
             <div className="flex-1 flex items-center justify-center p-8 lg:p-12 bg-white shadow-2xl z-10">
                 <div className="w-full max-w-sm space-y-8">
                     <div>
-                        <h2 className="text-3xl font-semibold text-lumina-dark tracking-tight">Welcome back</h2>
-                        <p className="text-gray-500 mt-2 text-sm">Sign in to your account</p>
+                        <h2 className="text-3xl font-semibold text-lumina-dark tracking-tight">
+                            {isSignUp ? 'Create an account' : 'Welcome back'}
+                        </h2>
+                        <p className="text-gray-500 mt-2 text-sm">
+                            {isSignUp ? 'Sign up for a new account' : 'Sign in to your account'}
+                        </p>
                     </div>
 
                     <form className="space-y-5" onSubmit={handleAuth}>
                         {error && (
                             <div className="bg-red-50 text-red-500 text-sm p-3 rounded-lg border border-red-100">
                                 {error}
+                            </div>
+                        )}
+                        {isSignUp && (
+                            <div className="space-y-1">
+                                <label className="text-sm font-medium text-gray-700">Display Name</label>
+                                <input
+                                    type="text"
+                                    placeholder="Jordan Doe"
+                                    value={displayName}
+                                    onChange={(e) => setDisplayName(e.target.value)}
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-lumina-blue-border focus:border-transparent transition-all"
+                                />
                             </div>
                         )}
                         <div className="space-y-1">
