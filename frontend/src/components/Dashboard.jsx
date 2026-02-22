@@ -79,8 +79,8 @@ const Dashboard = ({ onNavigate }) => {
             {/* Main Content */}
             <div className="flex-1 space-y-8">
                 <div>
-                    <h1 className="text-3xl font-semibold text-lumina-dark tracking-tight">Good morning.</h1>
-                    <p className="text-gray-500 mt-1">Here is a snapshot of your recent reflections.</p>
+                    <h1 className="text-3xl font-semibold text-lumina-dark dark:text-gray-100 tracking-tight">Good morning.</h1>
+                    <p className="text-gray-500 dark:text-gray-400 mt-1">Here is a snapshot of your recent reflections.</p>
                 </div>
 
                 {/* Bento Grid */}
@@ -89,7 +89,7 @@ const Dashboard = ({ onNavigate }) => {
                     {/* Card 1: Yellow - Entries Summary */}
                     <div className="bg-lumina-yellow-bg border border-lumina-yellow-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-1 transition-transform cursor-pointer" onClick={() => onNavigate('TIMELINE')}>
                         <div>
-                            <div className="flex items-center gap-2 text-lumina-yellow-text font-medium mb-1">
+                            <div className="flex items-center gap-2 text-lumina-black-text font-medium mb-1">
                                 <PenToolIcon /> Entries Summary
                             </div>
                             <p className="text-lumina-dark/70 text-sm">Your journaling streak is active</p>
@@ -106,7 +106,7 @@ const Dashboard = ({ onNavigate }) => {
                     {/* Card 2: Pink - Emotion Trends */}
                     <div className="bg-lumina-pink-bg border border-lumina-pink-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-1 transition-transform cursor-pointer" onClick={() => onNavigate('INSIGHTS')}>
                         <div className="flex justify-between items-center mb-2 z-10 relative">
-                            <div className="flex items-center gap-2 text-lumina-pink-text font-medium">
+                            <div className="flex items-center gap-2 text-lumina-black-text font-medium">
                                 <ActivityIcon /> Emotion Trends
                             </div>
                             <span className="text-xs font-semibold bg-white/40 text-lumina-dark px-2 py-1 rounded-md">Last 7 entries</span>
@@ -130,7 +130,7 @@ const Dashboard = ({ onNavigate }) => {
                     {/* Card 3: Green - By Context */}
                     <div className="bg-lumina-green-bg border border-lumina-green-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-1 transition-transform">
                         <div>
-                            <div className="flex items-center gap-2 text-lumina-green-text font-medium mb-1">
+                            <div className="flex items-center gap-2 text-lumina-black-text font-medium mb-1">
                                 <TagIcon size={18} /> By Context
                             </div>
                             <p className="text-lumina-dark/70 text-sm">Most frequent topics</p>
@@ -148,7 +148,7 @@ const Dashboard = ({ onNavigate }) => {
                     {/* Card 4: Blue - Writing Sessions */}
                     <div className="bg-lumina-blue-bg border border-lumina-blue-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-1 transition-transform">
                         <div>
-                            <div className="flex items-center gap-2 text-lumina-blue-text font-medium mb-1">
+                            <div className="flex items-center gap-2 text-lumina-black-text font-medium mb-1">
                                 <Clock size={18} /> Writing Sessions
                             </div>
                             <p className="text-lumina-dark/70 text-sm">Time spent reflecting</p>
@@ -166,7 +166,7 @@ const Dashboard = ({ onNavigate }) => {
                     {/* Recent Entries List */}
                     <div className="lg:col-span-2 space-y-4">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="font-semibold text-lg text-lumina-dark">Recent entries</h3>
+                            <h3 className="font-semibold text-lg text-lumina-dark dark:text-gray-100">Recent entries</h3>
                             <button
                                 onClick={() => onNavigate('TIMELINE')}
                                 className="text-sm font-medium text-gray-500 hover:text-lumina-dark flex items-center"
@@ -180,13 +180,13 @@ const Dashboard = ({ onNavigate }) => {
                                     key={entry.id}
                                     onClick={() => setSelectedEntry(entry)}
                                     className={`p-4 rounded-2xl cursor-pointer transition-all border ${selectedEntry?.id === entry.id
-                                        ? 'bg-white shadow-md border-gray-200'
-                                        : 'bg-white/50 border-transparent hover:bg-white hover:shadow-sm'
+                                        ? 'bg-white dark:bg-gray-800 shadow-md border-gray-200 dark:border-gray-700'
+                                        : 'bg-white/50 dark:bg-gray-800/50 border-transparent hover:bg-white dark:hover:bg-gray-800 hover:shadow-sm'
                                         }`}
                                 >
                                     <p className="text-xs text-gray-400 mb-1">{entry.created_at ? new Date(entry.created_at).toLocaleDateString() : 'Just now'}</p>
-                                    <h4 className="font-semibold text-lumina-dark mb-1">{entry.title}</h4>
-                                    <p className="text-sm text-gray-500 line-clamp-2">{entry.text}</p>
+                                    <h4 className="font-semibold text-lumina-dark dark:text-gray-100 mb-1">{entry.title}</h4>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">{entry.text}</p>
                                 </div>
                             ))}
                             {entries.length === 0 && (
@@ -196,13 +196,13 @@ const Dashboard = ({ onNavigate }) => {
                     </div>
 
                     {/* Detail Panel */}
-                    <div className="lg:col-span-3 bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex flex-col">
-                        <h3 className="font-semibold text-lg text-lumina-dark mb-4">Entry Insights</h3>
+                    <div className="lg:col-span-3 bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col transition-colors">
+                        <h3 className="font-semibold text-lg text-lumina-dark dark:text-gray-100 mb-4">Entry Insights</h3>
                         {selectedEntry ? (
                             <div className="space-y-6 flex-1">
                                 <div>
                                     <h4 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-2">Automated Summary</h4>
-                                    <p className="text-gray-700 bg-gray-50/50 p-4 rounded-xl border border-gray-100 italic">
+                                    <p className="text-gray-700 dark:text-gray-300 bg-gray-50/50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-100 dark:border-gray-700/50 italic transition-colors">
                                         "{selectedEntry.text}"
                                     </p>
                                 </div>
@@ -221,11 +221,11 @@ const Dashboard = ({ onNavigate }) => {
                                 )}
 
                                 {selectedEntry.suggestion && (
-                                    <div className="mt-auto bg-lumina-yellow-bg/20 border border-lumina-yellow-border/30 rounded-xl p-4">
-                                        <div className="flex gap-2 items-center text-lumina-yellow-text font-semibold mb-2">
+                                    <div className="mt-auto bg-lumina-yellow-bg/20 dark:bg-lumina-yellow-bg/10 border border-lumina-yellow-border/30 rounded-xl p-4 transition-colors">
+                                        <div className="flex gap-2 items-center text-lumina-yellow-text dark:text-yellow-400 font-semibold mb-2">
                                             <Zap size={16} /> AI Suggestion
                                         </div>
-                                        <p className="text-sm text-gray-700 leading-relaxed">
+                                        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                                             {selectedEntry.suggestion}
                                         </p>
                                     </div>
@@ -243,9 +243,9 @@ const Dashboard = ({ onNavigate }) => {
             {/* Right Sidebar */}
             <div className="w-full xl:w-80 space-y-6">
                 {/* Mini Calendar */}
-                <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 transition-colors">
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="font-semibold text-lumina-dark">Calendar</h3>
+                        <h3 className="font-semibold text-lumina-dark dark:text-gray-100">Calendar</h3>
                         <Calendar size={18} className="text-gray-400" />
                     </div>
                     <div className="grid grid-cols-7 gap-1 text-center mb-2">
@@ -261,11 +261,11 @@ const Dashboard = ({ onNavigate }) => {
                             return (
                                 <div
                                     key={i}
-                                    className={`w-full aspect-square rounded-full flex items-center justify-center text-sm ${isToday
-                                        ? 'bg-lumina-dark text-white font-semibold'
+                                    className={`w-full aspect-square rounded-full flex items-center justify-center text-sm transition-colors ${isToday
+                                        ? 'bg-lumina-dark dark:bg-gray-100 text-white dark:text-lumina-dark font-semibold'
                                         : hasEntry
-                                            ? 'bg-lumina-blue-bg/30 text-lumina-dark font-medium'
-                                            : 'text-gray-400 hover:bg-gray-50'
+                                            ? 'bg-lumina-blue-bg/30 dark:bg-lumina-blue-bg/50 text-lumina-dark dark:text-gray-200 font-medium'
+                                            : 'text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
                                         }`}
                                 >
                                     {num}
@@ -276,30 +276,30 @@ const Dashboard = ({ onNavigate }) => {
                 </div>
 
                 {/* Daily Timeline Tracker */}
-                <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
-                    <h3 className="font-semibold text-lumina-dark mb-4 text-center">Today's Flow</h3>
+                <div className="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 transition-colors">
+                    <h3 className="font-semibold text-lumina-dark dark:text-gray-100 mb-4 text-center">Today's Flow</h3>
                     <div className="space-y-6">
-                        <div className="relative pl-6 before:content-[''] before:absolute before:left-[7px] before:top-2 before:bottom-0 before:w-0.5 before:bg-gray-100">
+                        <div className="relative pl-6 before:content-[''] before:absolute before:left-[7px] before:top-2 before:bottom-0 before:w-0.5 before:bg-gray-100 dark:before:bg-gray-700">
                             {stats.todaysEntries.map((entry, idx) => (
                                 <div key={entry.id || idx} className="relative mb-6">
-                                    <span className={`absolute -left-6 top-1 w-4 h-4 rounded-full border-4 border-white shadow-sm z-10 ${entry.entry_type === 'deep' ? 'bg-lumina-blue-bg' : 'bg-lumina-yellow-bg'}`}></span>
+                                    <span className={`absolute -left-6 top-1 w-4 h-4 rounded-full border-4 border-white dark:border-gray-800 shadow-sm z-10 transition-colors ${entry.entry_type === 'deep' ? 'bg-lumina-blue-bg' : 'bg-lumina-yellow-bg'}`}></span>
                                     <p className="text-xs font-semibold text-gray-400 mb-1">
                                         {new Date(entry.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </p>
-                                    <div className="bg-gray-50 rounded-xl p-3 border border-gray-100">
-                                        <p className="text-sm font-medium text-lumina-dark">{entry.title || "Quick Note"}</p>
-                                        <p className="text-xs text-gray-500 mt-1 capitalize">{entry.entry_type || 'quick'} • {entry.time_spent || 5}m</p>
+                                    <div className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-3 border border-gray-100 dark:border-gray-700/50 transition-colors">
+                                        <p className="text-sm font-medium text-lumina-dark dark:text-gray-200">{entry.title || "Quick Note"}</p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize">{entry.entry_type || 'quick'} • {entry.time_spent || 5}m</p>
                                     </div>
                                 </div>
                             ))}
 
                             {/* Timeline Item (Current) */}
                             <div className="relative mt-6">
-                                <span className="absolute -left-6 top-1 w-4 h-4 rounded-full bg-lumina-dark border-4 border-white shadow-sm z-10 animate-pulse"></span>
-                                <p className="text-xs font-semibold text-lumina-dark mb-1">Now</p>
+                                <span className="absolute -left-6 top-1 w-4 h-4 rounded-full bg-lumina-dark dark:bg-gray-100 border-4 border-white dark:border-gray-800 shadow-sm z-10 animate-pulse transition-colors"></span>
+                                <p className="text-xs font-semibold text-lumina-dark dark:text-gray-200 mb-1">Now</p>
                                 <button
                                     onClick={() => onNavigate('WRITE')}
-                                    className="w-full border-2 border-dashed border-gray-200 rounded-xl p-3 text-sm font-medium text-gray-400 hover:text-lumina-dark hover:border-gray-300 hover:bg-gray-50 transition-colors"
+                                    className="w-full border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-3 text-sm font-medium text-gray-400 hover:text-lumina-dark dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                                 >
                                     + Add new reflection
                                 </button>

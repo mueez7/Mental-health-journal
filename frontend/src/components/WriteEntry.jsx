@@ -55,13 +55,13 @@ const WriteEntry = () => {
     return (
         <div className="max-w-4xl mx-auto p-6 lg:p-12 space-y-8 min-h-[calc(100vh-4rem)] flex flex-col">
             {/* Top Prompter Banner */}
-            <div className="bg-lumina-yellow-bg/50 border border-lumina-yellow-border text-lumina-dark rounded-2xl p-5 flex items-start gap-4 shadow-sm animate-fade-in">
-                <div className="w-10 h-10 rounded-full bg-lumina-yellow-text/20 flex items-center justify-center shrink-0">
-                    <Sparkles size={20} className="text-lumina-yellow-text" />
+            <div className="bg-lumina-yellow-bg/50 dark:bg-lumina-yellow-bg/10 border border-lumina-yellow-border/50 text-lumina-dark dark:text-gray-200 rounded-2xl p-5 flex items-start gap-4 shadow-sm animate-fade-in transition-colors">
+                <div className="w-10 h-10 rounded-full bg-lumina-yellow-text/20 dark:bg-yellow-500/20 flex items-center justify-center shrink-0">
+                    <Sparkles size={20} className="text-lumina-yellow-text dark:text-yellow-400" />
                 </div>
                 <div>
-                    <h3 className="text-sm font-bold text-lumina-dark/60 uppercase tracking-widest mb-1">AI Prompt</h3>
-                    <p className="text-lg font-medium text-lumina-dark">{prompt}</p>
+                    <h3 className="text-sm font-bold text-lumina-dark/60 dark:text-gray-400 uppercase tracking-widest mb-1">AI Prompt</h3>
+                    <p className="text-lg font-medium text-lumina-dark dark:text-gray-200">{prompt}</p>
                 </div>
             </div>
 
@@ -72,7 +72,7 @@ const WriteEntry = () => {
                     value={text}
                     onInput={handleInput}
                     placeholder="What's on your mind today? Write freely..."
-                    className="w-full flex-1 bg-transparent text-xl lg:text-3xl font-light text-lumina-dark placeholder:text-gray-300 resize-none outline-none leading-relaxed transition-all"
+                    className="w-full flex-1 bg-transparent text-xl lg:text-3xl font-light text-lumina-dark dark:text-gray-100 placeholder:text-gray-300 dark:placeholder:text-gray-600 resize-none outline-none leading-relaxed transition-all"
                     style={{ minHeight: '300px' }}
                     autoFocus
                 />
@@ -84,11 +84,11 @@ const WriteEntry = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end pt-6 border-t border-gray-100 mt-auto">
+            <div className="flex justify-end pt-6 border-t border-gray-100 dark:border-gray-800 mt-auto transition-colors">
                 <button
                     onClick={handleSave}
                     disabled={!text.trim() || isSaving}
-                    className="bg-lumina-dark text-white px-8 py-4 rounded-xl font-medium flex items-center gap-3 hover:bg-black hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
+                    className="bg-lumina-dark dark:bg-gray-100 text-white dark:text-lumina-dark px-8 py-4 rounded-xl font-medium flex items-center gap-3 hover:bg-black dark:hover:bg-white hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
                 >
                     <Save size={20} />
                     {isSaving ? 'Analyzing...' : 'Save Entry & Analyze'}

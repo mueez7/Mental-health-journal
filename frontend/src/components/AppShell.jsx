@@ -28,7 +28,7 @@ const AppShell = ({ children, currentView, onNavigate, onLogout }) => {
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
     return (
-        <div className="flex h-screen bg-lumina-bg overflow-hidden">
+        <div className="flex h-screen bg-lumina-bg dark:bg-lumina-dark text-lumina-dark dark:text-gray-100 overflow-hidden">
             {/* Sidebar Overlay for Mobile */}
             {isSidebarOpen && (
                 <div
@@ -88,7 +88,7 @@ const AppShell = ({ children, currentView, onNavigate, onLogout }) => {
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col min-w-0">
                 {/* Top Header */}
-                <header className="h-16 bg-gradient-to-r from-blue-50/80 via-purple-50/80 to-teal-50/80 bg-[length:200%_200%] animate-[gradientFlow_8s_ease-in-out_infinite] backdrop-blur-xl border-b border-gray-100 flex items-center justify-between px-4 lg:px-8 z-10 sticky top-0">
+                <header className="h-16 bg-gradient-to-r from-blue-50/80 via-purple-50/80 to-teal-50/80 dark:from-lumina-dark dark:via-gray-900/80 dark:to-lumina-dark bg-[length:200%_200%] animate-[gradientFlow_8s_ease-in-out_infinite] backdrop-blur-xl border-b border-gray-100 dark:border-gray-800 flex items-center justify-between px-4 lg:px-8 z-10 sticky top-0">
                     <div className="flex items-center gap-4">
                         <button
                             className="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
@@ -97,12 +97,12 @@ const AppShell = ({ children, currentView, onNavigate, onLogout }) => {
                             <Menu size={20} />
                         </button>
 
-                        <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-gray-100/80 rounded-lg text-gray-500 w-64 border border-transparent focus-within:border-lumina-blue-border focus-within:bg-white transition-all">
+                        <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-gray-100/80 dark:bg-gray-800/80 rounded-lg text-gray-500 w-64 border border-transparent focus-within:border-lumina-blue-border focus-within:bg-white dark:focus-within:bg-gray-700 transition-all">
                             <Search size={16} />
                             <input
                                 type="text"
                                 placeholder="Search entries, tags..."
-                                className="bg-transparent border-none outline-none text-sm w-full text-lumina-dark"
+                                className="bg-transparent border-none outline-none text-sm w-full text-lumina-dark dark:text-gray-200"
                             />
                         </div>
                     </div>
@@ -119,10 +119,10 @@ const AppShell = ({ children, currentView, onNavigate, onLogout }) => {
 
                             {/* Notifications Dropdown */}
                             {isNotificationsOpen && (
-                                <div className="absolute right-0 mt-2 w-80 bg-white shadow-xl rounded-2xl border border-gray-100 z-50 animate-[slideDown_0.2s_ease-out] overflow-hidden">
-                                    <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                                        <h3 className="font-semibold text-lumina-dark text-sm">Notifications</h3>
-                                        <span className="text-xs bg-lumina-blue-bg/40 text-gray-500 px-2 py-1 rounded-full font-medium">0 New</span>
+                                <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 shadow-xl rounded-2xl border border-gray-100 dark:border-gray-700 z-50 animate-[slideDown_0.2s_ease-out] overflow-hidden">
+                                    <div className="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-700/50">
+                                        <h3 className="font-semibold text-lumina-dark dark:text-gray-100 text-sm">Notifications</h3>
+                                        <span className="text-xs bg-lumina-blue-bg/40 text-gray-500 dark:text-gray-300 px-2 py-1 rounded-full font-medium">0 New</span>
                                     </div>
                                     <div className="max-h-80 overflow-y-auto hide-scrollbar w-full p-6 flex flex-col items-center justify-center text-center">
                                         <Bell size={24} className="text-gray-300 mb-2" />
@@ -142,15 +142,15 @@ const AppShell = ({ children, currentView, onNavigate, onLogout }) => {
 
                             {/* Profile Dropdown */}
                             {isProfileDropdownOpen && (
-                                <div className="absolute right-0 mt-2 w-60 bg-white shadow-xl rounded-2xl border border-gray-100 z-50 animate-[slideDown_0.2s_ease-out] overflow-hidden">
+                                <div className="absolute right-0 mt-2 w-60 bg-white dark:bg-gray-800 shadow-xl rounded-2xl border border-gray-100 dark:border-gray-700 z-50 animate-[slideDown_0.2s_ease-out] overflow-hidden">
                                     {/* User Info */}
-                                    <div className="p-4 border-b border-gray-100 bg-gray-50/50 flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                                            <User size={18} className="text-blue-600" />
+                                    <div className="p-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700/50 flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center shrink-0">
+                                            <User size={18} className="text-blue-600 dark:text-blue-400" />
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-lumina-dark text-sm leading-tight">Lumina User</p>
-                                            <p className="text-xs text-gray-500 mt-0.5">user@lumina.app</p>
+                                            <p className="font-semibold text-lumina-dark dark:text-gray-100 text-sm leading-tight">Lumina User</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">user@lumina.app</p>
                                         </div>
                                     </div>
 
@@ -161,9 +161,9 @@ const AppShell = ({ children, currentView, onNavigate, onLogout }) => {
                                                 setIsProfileDropdownOpen(false);
                                                 onNavigate('SETTINGS');
                                             }}
-                                            className="w-full text-left px-3 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 rounded-xl transition-colors flex items-center gap-3 group"
+                                            className="w-full text-left px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 rounded-xl transition-colors flex items-center gap-3 group"
                                         >
-                                            <div className="p-1.5 bg-gray-100 rounded-lg text-gray-500 group-hover:bg-blue-50 group-hover:text-blue-600">
+                                            <div className="p-1.5 bg-gray-100 dark:bg-gray-900 rounded-lg text-gray-500 dark:text-gray-400 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/50 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                                                 <Settings size={14} />
                                             </div>
                                             Profile Settings
@@ -173,9 +173,9 @@ const AppShell = ({ children, currentView, onNavigate, onLogout }) => {
                                                 setIsProfileDropdownOpen(false);
                                                 onNavigate('INSIGHTS');
                                             }}
-                                            className="w-full text-left px-3 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-xl transition-colors flex items-center gap-3 group mt-1"
+                                            className="w-full text-left px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl transition-colors flex items-center gap-3 group mt-1"
                                         >
-                                            <div className="p-1.5 bg-gray-100 rounded-lg text-gray-500 group-hover:bg-gray-200">
+                                            <div className="p-1.5 bg-gray-100 dark:bg-gray-900 rounded-lg text-gray-500 dark:text-gray-400 group-hover:bg-gray-200 dark:group-hover:bg-gray-600">
                                                 <BarChart2 size={14} />
                                             </div>
                                             Your Insights
@@ -183,15 +183,15 @@ const AppShell = ({ children, currentView, onNavigate, onLogout }) => {
                                     </div>
 
                                     {/* Logout */}
-                                    <div className="p-2 border-t border-gray-100">
+                                    <div className="p-2 border-t border-gray-100 dark:border-gray-700">
                                         <button
                                             onClick={() => {
                                                 setIsProfileDropdownOpen(false);
                                                 onLogout();
                                             }}
-                                            className="w-full text-left px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-colors flex items-center gap-3 group"
+                                            className="w-full text-left px-3 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl transition-colors flex items-center gap-3 group"
                                         >
-                                            <div className="p-1.5 bg-red-100/50 rounded-lg text-red-500 group-hover:bg-red-200/50">
+                                            <div className="p-1.5 bg-red-100/50 dark:bg-red-900/50 rounded-lg text-red-500 dark:text-red-400 group-hover:bg-red-200/50 dark:group-hover:bg-red-800/50">
                                                 <LogOut size={14} />
                                             </div>
                                             Log out

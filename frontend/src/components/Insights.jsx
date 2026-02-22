@@ -103,21 +103,21 @@ const Insights = () => {
         <div className="max-w-[1600px] mx-auto p-6 lg:p-12 space-y-8">
             {/* Header */}
             <div>
-                <h1 className="text-3xl font-semibold text-lumina-dark tracking-tight">Insights & Patterns</h1>
-                <p className="text-gray-500 mt-1">AI-driven analysis of your long-term emotional landscape.</p>
+                <h1 className="text-3xl font-semibold text-lumina-dark dark:text-gray-100 tracking-tight">Insights & Patterns</h1>
+                <p className="text-gray-500 dark:text-gray-400 mt-1">AI-driven analysis of your long-term emotional landscape.</p>
             </div>
 
             {/* Main Charts Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {/* Large Chart: Mood Stability (Spans 2 columns) */}
-                <div className="lg:col-span-2 bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col h-[500px]">
+                <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col h-[500px] transition-colors">
                     <div className="flex justify-between items-center mb-6">
-                        <div className="flex items-center gap-3 text-lumina-dark font-semibold text-lg">
+                        <div className="flex items-center gap-3 text-lumina-dark dark:text-gray-100 font-semibold text-lg">
                             <TrendingUp className="text-lumina-blue-text" />
                             Mood Stability (Recent Entries)
                         </div>
-                        <select className="bg-gray-50 border border-gray-200 text-gray-500 text-sm rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-lumina-blue-border">
+                        <select className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-sm rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-lumina-blue-border transition-colors">
                             <option>Recent Data</option>
                         </select>
                     </div>
@@ -143,12 +143,12 @@ const Insights = () => {
                 </div>
 
                 {/* Small Chart: Recurring Themes */}
-                <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col h-[500px]">
-                    <div className="flex items-center gap-3 text-lumina-dark font-semibold text-lg mb-6">
+                <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col h-[500px] transition-colors">
+                    <div className="flex items-center gap-3 text-lumina-dark dark:text-gray-100 font-semibold text-lg mb-6">
                         <Target className="text-lumina-pink-text" />
                         Dominant Themes
                     </div>
-                    <p className="text-sm text-gray-500 mb-6">AI identified subjects frequently appearing in your recent reflections.</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">AI identified subjects frequently appearing in your recent reflections.</p>
 
                     <div className="flex-1 w-full min-h-0">
                         <ResponsiveContainer width="100%" height="100%">
@@ -169,11 +169,11 @@ const Insights = () => {
                     </div>
 
                     {insightData.themes.length > 0 && (
-                        <div className="mt-6 bg-lumina-pink-bg/20 border border-lumina-pink-border/30 rounded-xl p-4">
-                            <div className="flex gap-2 items-center text-lumina-pink-text font-semibold mb-2 text-sm">
+                        <div className="mt-6 bg-lumina-pink-bg/20 dark:bg-lumina-pink-bg/10 border border-lumina-pink-border/30 rounded-xl p-4 transition-colors">
+                            <div className="flex gap-2 items-center text-lumina-pink-text dark:text-pink-400 font-semibold mb-2 text-sm">
                                 <AlertCircle size={16} /> Theme Noticed
                             </div>
-                            <p className="text-xs text-gray-600 leading-relaxed">
+                            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
                                 "{insightData.themes[0].name}" is currently your most frequent topic.
                             </p>
                         </div>
@@ -185,37 +185,37 @@ const Insights = () => {
             {/* Week in Review Summaries */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 {/* Areas for Growth Card */}
-                <div className="bg-lumina-yellow-bg/20 rounded-3xl p-6 md:p-8 border border-lumina-yellow-border/20 shadow-sm hover:shadow-lg hover:shadow-lumina-yellow-bg/30 hover:-translate-y-1 hover:border-lumina-yellow-border/50 transition-all duration-300">
-                    <h3 className="flex items-center gap-3 text-lg font-semibold text-lumina-dark mb-4 tracking-tight">
-                        <div className="p-2 bg-lumina-yellow-bg/50 rounded-xl text-lumina-yellow-text">
+                <div className="bg-lumina-yellow-bg/20 dark:bg-lumina-yellow-bg/10 rounded-3xl p-6 md:p-8 border border-lumina-yellow-border/20 shadow-sm hover:shadow-lg hover:shadow-lumina-yellow-bg/30 dark:hover:shadow-lumina-yellow-bg/10 hover:-translate-y-1 hover:border-lumina-yellow-border/50 transition-all duration-300">
+                    <h3 className="flex items-center gap-3 text-lg font-semibold text-lumina-dark dark:text-gray-100 mb-4 tracking-tight">
+                        <div className="p-2 bg-lumina-yellow-bg/50 dark:bg-yellow-500/20 rounded-xl text-lumina-yellow-text dark:text-yellow-400">
                             <AlertCircle size={20} strokeWidth={2.5} />
                         </div>
                         Areas for Growth
                     </h3>
 
-                    <p className="text-gray-700 leading-relaxed text-sm md:text-base mb-4">
+                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm md:text-base mb-4 transition-colors">
                         {insightData.growthArea}
                     </p>
-                    <p className="text-sm md:text-base text-gray-700">
-                        <strong className="text-lumina-dark">Suggestion: </strong>
+                    <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 transition-colors">
+                        <strong className="text-lumina-dark dark:text-white">Suggestion: </strong>
                         {insightData.growthSuggestion}
                     </p>
                 </div>
 
                 {/* Positive Highlights Card */}
-                <div className="bg-lumina-green-bg/20 rounded-3xl p-6 md:p-8 border border-lumina-green-border/20 shadow-sm hover:shadow-lg hover:shadow-lumina-green-bg/30 hover:-translate-y-1 hover:border-lumina-green-border/50 transition-all duration-300">
-                    <h3 className="flex items-center gap-3 text-lg font-semibold text-lumina-dark mb-4 tracking-tight">
-                        <div className="p-2 bg-lumina-green-bg/50 rounded-xl text-lumina-green-text">
+                <div className="bg-lumina-green-bg/20 dark:bg-lumina-green-bg/10 rounded-3xl p-6 md:p-8 border border-lumina-green-border/20 shadow-sm hover:shadow-lg hover:shadow-lumina-green-bg/30 dark:hover:shadow-lumina-green-bg/10 hover:-translate-y-1 hover:border-lumina-green-border/50 transition-all duration-300">
+                    <h3 className="flex items-center gap-3 text-lg font-semibold text-lumina-dark dark:text-gray-100 mb-4 tracking-tight">
+                        <div className="p-2 bg-lumina-green-bg/50 dark:bg-green-500/20 rounded-xl text-lumina-green-text dark:text-green-400">
                             <Smile size={20} strokeWidth={2.5} />
                         </div>
                         Positive Highlights
                     </h3>
 
-                    <p className="text-gray-700 leading-relaxed text-sm md:text-base mb-4">
+                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm md:text-base mb-4 transition-colors">
                         {insightData.positiveHighlight}
                     </p>
-                    <p className="text-sm md:text-base text-gray-700">
-                        <strong className="text-lumina-dark">Suggestion: </strong>
+                    <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 transition-colors">
+                        <strong className="text-lumina-dark dark:text-white">Suggestion: </strong>
                         {insightData.positiveSuggestion}
                     </p>
                 </div>
