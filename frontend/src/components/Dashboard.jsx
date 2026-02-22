@@ -1,7 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from 'recharts';
-import { Calendar, Clock, ChevronRight, Tag as TagIcon, Zap, PenTool, Activity } from 'lucide-react';
+import { Calendar, Clock, ChevronRight, Tag as TagIcon, Zap, PenTool, Activity, Heart, Triangle, Plus, Star } from 'lucide-react';
+import { motion } from 'framer-motion';
 import api from '../lib/api';
+import GlobalLoader from './GlobalLoader';
 
 const Dashboard = ({ onNavigate }) => {
     const [entries, setEntries] = useState([]);
@@ -71,11 +73,30 @@ const Dashboard = ({ onNavigate }) => {
     }, [entries]);
 
     if (loading) {
-        return <div className="h-full w-full flex items-center justify-center p-12"><p className="text-gray-400">Loading dashboard...</p></div>;
+        return <GlobalLoader message="Gathering your dashboard..." />;
     }
 
+    // Animation variants
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+    };
+
     return (
-        <div className="flex flex-col xl:flex-row gap-6 p-6 max-w-[1600px] mx-auto">
+        <motion.div
+            className="flex flex-col xl:flex-row gap-6 p-6 max-w-[1600px] mx-auto"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+        >
             {/* Main Content */}
             <div className="flex-1 space-y-8">
                 <div>
@@ -87,31 +108,32 @@ const Dashboard = ({ onNavigate }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                     {/* Card 1: Yellow - Entries Summary */}
-                    <div className="bg-lumina-yellow-bg border border-lumina-yellow-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-1 transition-transform cursor-pointer" onClick={() => onNavigate('TIMELINE')}>
-                        <div>
+                    <motion.div variants={itemVariants} className="bg-lumina-yellow-bg border border-lumina-yellow-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-2 hover:shadow-lg transition-all cursor-pointer relative overflow-hidden group" onClick={() => onNavigate('TIMELINE')}>
+                        <div className="relative z-10">
                             <div className="flex items-center gap-2 text-lumina-black-text font-medium mb-1">
                                 <PenToolIcon /> Entries Summary
                             </div>
                             <p className="text-lumina-dark/70 text-sm">Your journaling streak is active</p>
                         </div>
-                        <div className="flex items-baseline gap-2 mt-4">
+                        <div className="flex items-baseline gap-2 mt-4 relative z-10">
                             <span className="text-5xl font-bold text-lumina-dark tracking-tighter">{stats.total}</span>
                             <span className="text-lumina-dark/80 font-medium">total</span>
                         </div>
-                        <div className="mt-2 text-sm text-lumina-dark/70 font-medium bg-white/30 self-start px-3 py-1 rounded-full">
+                        <div className="mt-2 text-sm text-lumina-dark/70 font-medium bg-white/30 self-start px-3 py-1 rounded-full relative z-10">
                             {stats.deepReflections} deep reflections
                         </div>
-                    </div>
+                        <Star className="absolute -bottom-4 -right-4 text-lumina-dark/[0.04] dark:text-gray-100/[0.04] group-hover:scale-110 group-hover:-rotate-12 transition-all duration-500 ease-out" size={130} strokeWidth={1} fill="currentColor" />
+                    </motion.div>
 
                     {/* Card 2: Pink - Emotion Trends */}
-                    <div className="bg-lumina-pink-bg border border-lumina-pink-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-1 transition-transform cursor-pointer" onClick={() => onNavigate('INSIGHTS')}>
+                    <motion.div variants={itemVariants} className="bg-lumina-pink-bg border border-lumina-pink-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-2 hover:shadow-lg transition-all cursor-pointer relative overflow-hidden group" onClick={() => onNavigate('INSIGHTS')}>
                         <div className="flex justify-between items-center mb-2 z-10 relative">
                             <div className="flex items-center gap-2 text-lumina-black-text font-medium">
                                 <ActivityIcon /> Emotion Trends
                             </div>
                             <span className="text-xs font-semibold bg-white/40 text-lumina-dark px-2 py-1 rounded-md">Last 7 entries</span>
                         </div>
-                        <div className="flex-1 -mx-6 -mb-6 mt-2 relative overflow-hidden rounded-b-3xl">
+                        <div className="flex-1 -mx-6 -mb-6 mt-2 relative overflow-hidden rounded-b-3xl z-10">
                             <ResponsiveContainer width="100%" height="100%">
                                 <AreaChart data={stats.recentMoods}>
                                     <defs>
@@ -125,17 +147,18 @@ const Dashboard = ({ onNavigate }) => {
                                 </AreaChart>
                             </ResponsiveContainer>
                         </div>
-                    </div>
+                        <Heart className="absolute -bottom-2 -right-4 text-lumina-dark/[0.04] dark:text-gray-100/[0.04] group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 ease-out z-0" size={140} strokeWidth={1} fill="currentColor" />
+                    </motion.div>
 
                     {/* Card 3: Green - By Context */}
-                    <div className="bg-lumina-green-bg border border-lumina-green-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-1 transition-transform">
-                        <div>
+                    <motion.div variants={itemVariants} className="bg-lumina-green-bg border border-lumina-green-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-2 hover:shadow-lg transition-all relative overflow-hidden group">
+                        <div className="relative z-10">
                             <div className="flex items-center gap-2 text-lumina-black-text font-medium mb-1">
                                 <TagIcon size={18} /> By Context
                             </div>
                             <p className="text-lumina-dark/70 text-sm">Most frequent topics</p>
                         </div>
-                        <div className="flex flex-wrap gap-2 mt-4">
+                        <div className="flex flex-wrap gap-2 mt-4 relative z-10">
                             {stats.topTags.map(([tag, count]) => (
                                 <span key={tag} className="bg-white/40 text-lumina-dark font-medium px-4 py-2 rounded-full text-sm">
                                     {tag} ({count})
@@ -143,21 +166,23 @@ const Dashboard = ({ onNavigate }) => {
                             ))}
                             {stats.topTags.length === 0 && <span className="text-gray-500 text-sm italic">No topics yet</span>}
                         </div>
-                    </div>
+                        <Triangle className="absolute -bottom-8 -right-4 text-lumina-dark/[0.04] dark:text-gray-100/[0.04] group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 ease-out" size={160} strokeWidth={1} fill="currentColor" />
+                    </motion.div>
 
                     {/* Card 4: Blue - Writing Sessions */}
-                    <div className="bg-lumina-blue-bg border border-lumina-blue-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-1 transition-transform">
-                        <div>
+                    <motion.div variants={itemVariants} className="bg-lumina-blue-bg border border-lumina-blue-border rounded-3xl p-6 shadow-sm flex flex-col justify-between h-48 hover:-translate-y-2 hover:shadow-lg transition-all relative overflow-hidden group">
+                        <div className="relative z-10">
                             <div className="flex items-center gap-2 text-lumina-black-text font-medium mb-1">
                                 <Clock size={18} /> Writing Sessions
                             </div>
                             <p className="text-lumina-dark/70 text-sm">Time spent reflecting</p>
                         </div>
-                        <div className="flex items-baseline gap-2 mt-4">
+                        <div className="flex items-baseline gap-2 mt-4 relative z-10">
                             <span className="text-5xl font-bold text-lumina-dark">{stats.hours}</span>
                             <span className="text-lumina-dark/80 font-medium">hours</span>
                         </div>
-                    </div>
+                        <Plus className="absolute -bottom-8 -right-8 text-lumina-dark/[0.04] dark:text-gray-100/[0.04] group-hover:scale-110 group-hover:rotate-45 transition-all duration-500 ease-out" size={160} strokeWidth={1} />
+                    </motion.div>
 
                 </div>
 
@@ -176,8 +201,9 @@ const Dashboard = ({ onNavigate }) => {
                         </div>
                         <div className="space-y-3">
                             {entries.slice(0, 3).map((entry) => (
-                                <div
+                                <motion.div
                                     key={entry.id}
+                                    variants={itemVariants}
                                     onClick={() => setSelectedEntry(entry)}
                                     className={`p-4 rounded-2xl cursor-pointer transition-all border ${selectedEntry?.id === entry.id
                                         ? 'bg-white dark:bg-gray-800 shadow-md border-gray-200 dark:border-gray-700'
@@ -187,7 +213,7 @@ const Dashboard = ({ onNavigate }) => {
                                     <p className="text-xs text-gray-400 mb-1">{entry.created_at ? new Date(entry.created_at).toLocaleDateString() : 'Just now'}</p>
                                     <h4 className="font-semibold text-lumina-dark dark:text-gray-100 mb-1">{entry.title}</h4>
                                     <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">{entry.text}</p>
-                                </div>
+                                </motion.div>
                             ))}
                             {entries.length === 0 && (
                                 <p className="text-sm text-gray-400 italic">No entries yet. Start writing!</p>
@@ -196,10 +222,16 @@ const Dashboard = ({ onNavigate }) => {
                     </div>
 
                     {/* Detail Panel */}
-                    <div className="lg:col-span-3 bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col transition-colors">
+                    <motion.div variants={itemVariants} className="lg:col-span-3 bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col transition-colors">
                         <h3 className="font-semibold text-lg text-lumina-dark dark:text-gray-100 mb-4">Entry Insights</h3>
                         {selectedEntry ? (
-                            <div className="space-y-6 flex-1">
+                            <motion.div
+                                key={selectedEntry.id}
+                                initial={{ opacity: 0, scale: 0.98 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.3 }}
+                                className="space-y-6 flex-1"
+                            >
                                 <div>
                                     <h4 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-2">Automated Summary</h4>
                                     <p className="text-gray-700 dark:text-gray-300 bg-gray-50/50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-100 dark:border-gray-700/50 italic transition-colors">
@@ -230,18 +262,18 @@ const Dashboard = ({ onNavigate }) => {
                                         </p>
                                     </div>
                                 )}
-                            </div>
+                            </motion.div>
                         ) : (
                             <div className="flex-1 flex items-center justify-center text-gray-400 italic">
                                 Select an entry to view insights
                             </div>
                         )}
-                    </div>
+                    </motion.div>
                 </div>
             </div>
 
             {/* Right Sidebar */}
-            <div className="w-full xl:w-80 space-y-6">
+            <motion.div variants={itemVariants} className="w-full xl:w-80 space-y-6">
                 {/* Mini Calendar */}
                 <div className="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 transition-colors">
                     <div className="flex items-center justify-between mb-4">
@@ -308,8 +340,8 @@ const Dashboard = ({ onNavigate }) => {
                     </div>
                 </div>
 
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 };
 

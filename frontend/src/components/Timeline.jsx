@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Calendar, Filter } from 'lucide-react';
+import { motion } from 'framer-motion';
 import api from '../lib/api';
+import GlobalLoader from './GlobalLoader';
 
 const filters = ['All', 'Positive', 'Anxious', 'Deep', 'Quick', 'Creative'];
 
@@ -43,11 +45,26 @@ const Timeline = () => {
     });
 
     if (loading) {
-        return <div className="h-full w-full flex items-center justify-center p-12"><p className="text-gray-400">Loading timeline...</p></div>;
+        return <GlobalLoader message="Loading your timeline..." />;
     }
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 15 },
+        visible: { opacity: 1, y: 0, transition: { ease: "easeOut" } }
+    };
+
     return (
-        <div className="max-w-5xl mx-auto px-6 py-6 lg:px-12 lg:py-12 space-y-8">
+        <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="max-w-5xl mx-auto px-6 py-6 lg:px-12 lg:py-12 space-y-8"
+        >
             {/* Header & Controls */}
             <div className="space-y-6 sticky top-0 bg-lumina-bg/95 dark:bg-lumina-dark/95 backdrop-blur-xl pt-6 lg:pt-12 pb-6 z-30 -mx-6 px-6 lg:-mx-12 lg:px-12 border-b border-gray-100 dark:border-gray-800 transition-colors">
                 <div>
@@ -95,7 +112,7 @@ const Timeline = () => {
                     </div>
                 ) : (
                     filteredEntries.map((entry) => (
-                        <div key={entry.id} className="relative flex gap-6 sm:gap-8 mb-10 group">
+                        <motion.div variants={itemVariants} key={entry.id} className="relative flex gap-6 sm:gap-8 mb-10 group">
                             {/* Timeline dot */}
                             <div className="shrink-0 mt-5 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white dark:bg-gray-900 border-4 border-gray-100 dark:border-gray-800 flex items-center justify-center relative z-10 shadow-sm transition-all group-hover:border-lumina-blue-border dark:group-hover:border-gray-600">
                                 <Calendar size={16} className="text-gray-400 dark:text-gray-500 group-hover:text-lumina-blue-text dark:group-hover:text-gray-300" />
@@ -140,11 +157,11 @@ const Timeline = () => {
                                     </span>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))
                 )}
             </div>
-        </div>
+        </motion.div>
     );
 };
 

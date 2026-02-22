@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, Save } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import api from '../lib/api';
 
 const prompts = [
@@ -53,9 +54,19 @@ const WriteEntry = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-6 lg:p-12 space-y-8 min-h-[calc(100vh-4rem)] flex flex-col">
+        <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="max-w-4xl mx-auto p-6 lg:p-12 space-y-8 min-h-[calc(100vh-4rem)] flex flex-col"
+        >
             {/* Top Prompter Banner */}
-            <div className="bg-lumina-yellow-bg/50 dark:bg-lumina-yellow-bg/10 border border-lumina-yellow-border/50 text-lumina-dark dark:text-gray-200 rounded-2xl p-5 flex items-start gap-4 shadow-sm animate-fade-in transition-colors">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.4 }}
+                className="bg-lumina-yellow-bg/50 dark:bg-lumina-yellow-bg/10 border border-lumina-yellow-border/50 text-lumina-dark dark:text-gray-200 rounded-2xl p-5 flex items-start gap-4 shadow-sm transition-colors"
+            >
                 <div className="w-10 h-10 rounded-full bg-lumina-yellow-text/20 dark:bg-yellow-500/20 flex items-center justify-center shrink-0">
                     <Sparkles size={20} className="text-lumina-yellow-text dark:text-yellow-400" />
                 </div>
@@ -63,7 +74,7 @@ const WriteEntry = () => {
                     <h3 className="text-sm font-bold text-lumina-dark/60 dark:text-gray-400 uppercase tracking-widest mb-1">AI Prompt</h3>
                     <p className="text-lg font-medium text-lumina-dark dark:text-gray-200">{prompt}</p>
                 </div>
-            </div>
+            </motion.div>
 
             {/* Writing Area */}
             <div className="flex-1 flex flex-col relative group">
@@ -94,7 +105,7 @@ const WriteEntry = () => {
                     {isSaving ? 'Analyzing...' : 'Save Entry & Analyze'}
                 </button>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Login from './components/Login';
 import AppShell from './components/AppShell';
 import Dashboard from './components/Dashboard';
@@ -7,11 +7,15 @@ import WriteEntry from './components/WriteEntry';
 import Timeline from './components/Timeline';
 import Insights from './components/Insights';
 import Settings from './components/Settings';
+import GlobalLoader from './components/GlobalLoader';
 import { supabase } from './lib/supabaseClient';
+import { motion } from 'framer-motion';
 
 function App() {
   const [session, setSession] = useState(null);
   const [loadingInitial, setLoadingInitial] = useState(true);
+  // Tracks which pages have been visited — once visited, a page stays mounted forever
+  const [visitedViews, setVisitedViews] = useState(new Set());
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -33,11 +37,8 @@ function App() {
     navigate('/login');
   };
 
-  if (loadingInitial) {
-    return <div className="h-screen w-screen flex items-center justify-center bg-lumina-bg"><p className="text-gray-500">Loading your journal...</p></div>;
-  }
-
   // Derive current view from routing directly for AppShell active states
+  const validPaths = ['/dashboard', '/write', '/timeline', '/insights', '/settings'];
   const currentViewMap = {
     '/dashboard': 'DASHBOARD',
     '/write': 'WRITE',
@@ -58,29 +59,91 @@ function App() {
     navigate(routeMap[view] || '/dashboard');
   };
 
-  return (
-    <Routes>
-      {/* Public Route */}
-      <Route path="/login" element={!session ? <Login /> : <Navigate to="/dashboard" replace />} />
+  // Redirect to /dashboard if on root or unknown path (only when logged in)
+  useEffect(() => {
+    if (session && !validPaths.includes(location.pathname) && location.pathname !== '/login') {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [session, location.pathname]);
 
-      {/* Protected Routes directly inside AppShell */}
-      <Route path="/*" element={
-        session ? (
-          <AppShell currentView={currentView} onNavigate={navigateToView} onLogout={handleLogout} user={session?.user}>
-            <Routes>
-              <Route path="/dashboard" element={<Dashboard onNavigate={navigateToView} />} />
-              <Route path="/write" element={<WriteEntry />} />
-              <Route path="/timeline" element={<Timeline />} />
-              <Route path="/insights" element={<Insights />} />
-              <Route path="/settings" element={<Settings user={session?.user} />} />
-              <Route path="*" element={<Navigate to="/dashboard" replace />} />
-            </Routes>
-          </AppShell>
-        ) : (
-          <Navigate to="/login" replace />
-        )
-      } />
-    </Routes>
+  // Mark the current view as visited so it gets mounted (only once)
+  useEffect(() => {
+    if (session) {
+      setVisitedViews((prev) => {
+        if (prev.has(currentView)) return prev;
+        return new Set(prev).add(currentView);
+      });
+    }
+  }, [currentView, session]);
+
+  if (loadingInitial) {
+    return <GlobalLoader message="Waking up your journal..." />;
+  }
+
+  // If not logged in, show login
+  if (!session) {
+    return (
+      <Routes>
+        <Route path="*" element={<Login />} />
+      </Routes>
+    );
+  }
+
+  // Pages mount lazily on first visit and stay alive (hidden via CSS).
+  // APIs only fire when you first navigate to a page — revisiting won't re-fetch.
+  return (
+    <AppShell currentView={currentView} onNavigate={navigateToView} onLogout={handleLogout} user={session?.user}>
+      {visitedViews.has('DASHBOARD') && (
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={currentView === 'DASHBOARD' ? { opacity: 1, y: 0, display: 'block' } : { opacity: 0, y: 15, transitionEnd: { display: 'none' } }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="h-full w-full"
+        >
+          <Dashboard onNavigate={navigateToView} />
+        </motion.div>
+      )}
+      {visitedViews.has('WRITE') && (
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={currentView === 'WRITE' ? { opacity: 1, y: 0, display: 'block' } : { opacity: 0, y: 15, transitionEnd: { display: 'none' } }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="h-full w-full"
+        >
+          <WriteEntry />
+        </motion.div>
+      )}
+      {visitedViews.has('TIMELINE') && (
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={currentView === 'TIMELINE' ? { opacity: 1, y: 0, display: 'block' } : { opacity: 0, y: 15, transitionEnd: { display: 'none' } }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="h-full w-full"
+        >
+          <Timeline />
+        </motion.div>
+      )}
+      {visitedViews.has('INSIGHTS') && (
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={currentView === 'INSIGHTS' ? { opacity: 1, y: 0, display: 'block' } : { opacity: 0, y: 15, transitionEnd: { display: 'none' } }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="h-full w-full"
+        >
+          <Insights />
+        </motion.div>
+      )}
+      {visitedViews.has('SETTINGS') && (
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={currentView === 'SETTINGS' ? { opacity: 1, y: 0, display: 'block' } : { opacity: 0, y: 15, transitionEnd: { display: 'none' } }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="h-full w-full"
+        >
+          <Settings user={session?.user} />
+        </motion.div>
+      )}
+    </AppShell>
   );
 }
 

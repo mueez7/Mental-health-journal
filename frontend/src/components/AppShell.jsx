@@ -97,14 +97,7 @@ const AppShell = ({ children, currentView, onNavigate, onLogout, user }) => {
                             <Menu size={20} />
                         </button>
 
-                        <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-gray-100/80 dark:bg-gray-800/80 rounded-lg text-gray-500 w-64 border border-transparent focus-within:border-lumina-blue-border focus-within:bg-white dark:focus-within:bg-gray-700 transition-all">
-                            <Search size={16} />
-                            <input
-                                type="text"
-                                placeholder="Search entries, tags..."
-                                className="bg-transparent border-none outline-none text-sm w-full text-lumina-dark dark:text-gray-200"
-                            />
-                        </div>
+
                     </div>
 
                     <div className="flex items-center gap-4 text-gray-600">

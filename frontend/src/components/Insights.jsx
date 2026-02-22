@@ -1,7 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar, Cell } from 'recharts';
 import { Target, TrendingUp, AlertCircle, Smile } from 'lucide-react';
+import { motion } from 'framer-motion';
 import api from '../lib/api';
+import GlobalLoader from './GlobalLoader';
 
 const Insights = () => {
     const [entries, setEntries] = useState([]);
@@ -96,11 +98,25 @@ const Insights = () => {
     }, [entries]);
 
     if (loading) {
-        return <div className="h-full w-full flex items-center justify-center p-12"><p className="text-gray-400">Loading insights...</p></div>;
+        return <GlobalLoader message="Analyzing your patterns..." />;
     }
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    };
+    const itemVariants = {
+        hidden: { opacity: 0, y: 15 },
+        visible: { opacity: 1, y: 0 }
+    };
+
     return (
-        <div className="max-w-[1600px] mx-auto p-6 lg:p-12 space-y-8">
+        <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="max-w-[1600px] mx-auto p-6 lg:p-12 space-y-8"
+        >
             {/* Header */}
             <div>
                 <h1 className="text-3xl font-semibold text-lumina-dark dark:text-gray-100 tracking-tight">Insights & Patterns</h1>
@@ -111,7 +127,7 @@ const Insights = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {/* Large Chart: Mood Stability (Spans 2 columns) */}
-                <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col h-[500px] transition-colors">
+                <motion.div variants={itemVariants} className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col h-[500px] transition-colors">
                     <div className="flex justify-between items-center mb-6">
                         <div className="flex items-center gap-3 text-lumina-dark dark:text-gray-100 font-semibold text-lg">
                             <TrendingUp className="text-lumina-blue-text" />
@@ -140,10 +156,10 @@ const Insights = () => {
                         <span className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-lumina-blue-text"></div> General Mood</span>
                         <span className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-lumina-yellow-text"></div> Stress Level</span>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Small Chart: Recurring Themes */}
-                <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col h-[500px] transition-colors">
+                <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col h-[500px] transition-colors">
                     <div className="flex items-center gap-3 text-lumina-dark dark:text-gray-100 font-semibold text-lg mb-6">
                         <Target className="text-lumina-pink-text" />
                         Dominant Themes
@@ -178,14 +194,14 @@ const Insights = () => {
                             </p>
                         </div>
                     )}
-                </div>
+                </motion.div>
 
             </div>
 
             {/* Week in Review Summaries */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 {/* Areas for Growth Card */}
-                <div className="bg-lumina-yellow-bg/20 dark:bg-lumina-yellow-bg/10 rounded-3xl p-6 md:p-8 border border-lumina-yellow-border/20 shadow-sm hover:shadow-lg hover:shadow-lumina-yellow-bg/30 dark:hover:shadow-lumina-yellow-bg/10 hover:-translate-y-1 hover:border-lumina-yellow-border/50 transition-all duration-300">
+                <motion.div variants={itemVariants} className="bg-lumina-yellow-bg/20 dark:bg-lumina-yellow-bg/10 rounded-3xl p-6 md:p-8 border border-lumina-yellow-border/20 shadow-sm hover:shadow-lg hover:shadow-lumina-yellow-bg/30 dark:hover:shadow-lumina-yellow-bg/10 hover:-translate-y-1 hover:border-lumina-yellow-border/50 transition-all duration-300">
                     <h3 className="flex items-center gap-3 text-lg font-semibold text-lumina-dark dark:text-gray-100 mb-4 tracking-tight">
                         <div className="p-2 bg-lumina-yellow-bg/50 dark:bg-yellow-500/20 rounded-xl text-lumina-yellow-text dark:text-yellow-400">
                             <AlertCircle size={20} strokeWidth={2.5} />
@@ -200,10 +216,10 @@ const Insights = () => {
                         <strong className="text-lumina-dark dark:text-white">Suggestion: </strong>
                         {insightData.growthSuggestion}
                     </p>
-                </div>
+                </motion.div>
 
                 {/* Positive Highlights Card */}
-                <div className="bg-lumina-green-bg/20 dark:bg-lumina-green-bg/10 rounded-3xl p-6 md:p-8 border border-lumina-green-border/20 shadow-sm hover:shadow-lg hover:shadow-lumina-green-bg/30 dark:hover:shadow-lumina-green-bg/10 hover:-translate-y-1 hover:border-lumina-green-border/50 transition-all duration-300">
+                <motion.div variants={itemVariants} className="bg-lumina-green-bg/20 dark:bg-lumina-green-bg/10 rounded-3xl p-6 md:p-8 border border-lumina-green-border/20 shadow-sm hover:shadow-lg hover:shadow-lumina-green-bg/30 dark:hover:shadow-lumina-green-bg/10 hover:-translate-y-1 hover:border-lumina-green-border/50 transition-all duration-300">
                     <h3 className="flex items-center gap-3 text-lg font-semibold text-lumina-dark dark:text-gray-100 mb-4 tracking-tight">
                         <div className="p-2 bg-lumina-green-bg/50 dark:bg-green-500/20 rounded-xl text-lumina-green-text dark:text-green-400">
                             <Smile size={20} strokeWidth={2.5} />
@@ -218,9 +234,9 @@ const Insights = () => {
                         <strong className="text-lumina-dark dark:text-white">Suggestion: </strong>
                         {insightData.positiveSuggestion}
                     </p>
-                </div>
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
