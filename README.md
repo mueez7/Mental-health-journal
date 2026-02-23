@@ -16,7 +16,7 @@ Lumina is a highly responsive, single-page application (SPA) mental health journ
 ### Backend
 - **Framework:** FastAPI
 - **Database/Auth:** Supabase
-- **AI Integration:** OpenAI API
+- **AI Integration:** OpenRouter API
 - **Utilities:** Pydantic (data validation), PyJWT (authentication)
 
 ## 📁 Project Structure
@@ -66,7 +66,10 @@ cd Mental-health-journal
    ```bash
    npm install
    ```
-3. Set up environment variables (create a `.env` file based on `.env.example` if applicable and put your Supabase keys).
+3. Set up environment variables: create a `.env` file based on `frontend/.env.example` and add your Supabase keys:
+   ```bash
+   cp .env.example .env
+   ```
 4. Run the development server:
    ```bash
    npm run dev
@@ -92,7 +95,10 @@ cd Mental-health-journal
    ```bash
    pip install -r requirements.txt
    ```
-4. Configure your `.env` file with necessary backend keys (Supabase API, OpenAI keys, JWT keys).
+4. Setup environment variables: create a `.env` file based on `backend/.env.example` and add your keys (Supabase, OpenRouter, JWT):
+   ```bash
+   cp .env.example .env
+   ```
 5. Run the FastAPI development server:
    ```bash
    uvicorn app.main:app --reload
