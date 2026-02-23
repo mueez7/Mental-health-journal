@@ -112,6 +112,7 @@ Mental-health-journal/
     │   │   ├── db_service.py        # Supabase database operations
     │   │   └── llm_service.py       # OpenRouter LLM integration
     │   └── main.py                  # FastAPI app entry point
+    ├── schema.sql                   # Supabase database schema (run in SQL Editor)
     ├── .env.example                 # Backend env variable template
     └── requirements.txt             # Python dependencies
 ```
@@ -135,7 +136,21 @@ git clone https://github.com/mueez7/Mental-health-journal.git
 cd Mental-health-journal
 ```
 
-### 2. Frontend Setup
+### 2. Supabase Database Setup
+
+1. Create a new project on [Supabase](https://supabase.com/).
+2. Open the **SQL Editor** in your Supabase dashboard.
+3. Copy and paste the contents of `backend/schema.sql` and run it.
+
+This will create the following tables with Row Level Security (RLS) enabled:
+
+| Table | Purpose |
+|---|---|
+| `profiles` | User profiles, auto-created on sign-up via trigger |
+| `journal_entries` | Journal entries with mood/stress scores, tags, and LLM suggestions |
+| `weekly_insights` | AI-generated weekly summaries, themes, and growth areas |
+
+### 3. Frontend Setup
 
 ```bash
 cd frontend
@@ -162,7 +177,7 @@ npm run dev
 
 The frontend will be running at **http://localhost:5173**.
 
-### 3. Backend Setup
+### 4. Backend Setup
 
 ```bash
 cd backend
