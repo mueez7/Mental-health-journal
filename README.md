@@ -1,4 +1,4 @@
-# ✨ Lumina — LLM-Powered Mental Health Journal
+# Lumina — LLM-Powered Mental Health Journal
 
 <p align="center">
   <img src="frontend/src/assets/Logo.svg" alt="Lumina Logo" width="120" />
@@ -20,7 +20,7 @@
 
 ---
 
-## 📖 About
+## About
 
 Lumina is a full-stack, single-page application designed to be a **distraction-free mental health journaling tool**. It combines a premium, animated UI with an LLM-powered insights engine to help you understand your journaling trends and emotional patterns over time.
 
@@ -28,18 +28,18 @@ Lumina is a full-stack, single-page application designed to be a **distraction-f
 
 | Feature | Description |
 |---|---|
-| **📝 Distraction-Free Writing** | A clean, focused journal entry editor with guided prompts |
-| **📊 Smart Dashboard** | At-a-glance metrics — total entries, streaks, mood trends, and weekly activity |
-| **📅 Interactive Timeline** | A chronological, searchable feed of all past journal entries |
-| **🧠 AI-Powered Insights** | LLM-generated reflections, patterns, and summaries over your journaling history |
-| **🎨 Theming** | Dark / Light mode toggle with persistent user preferences |
-| **⚙️ Account Settings** | Profile management, password updates, and data export |
-| **🔐 Auth with Supabase** | Secure sign-up, login, and session management via Supabase Auth |
-| **✨ Smooth Animations** | Page transitions, micro-interactions, and a branded animated logo (Framer Motion + GSAP) |
+| ** Distraction-Free Writing** | A clean, focused journal entry editor with guided prompts |
+| **Smart Dashboard** | At-a-glance metrics — total entries, streaks, mood trends, and weekly activity |
+| ** Interactive Timeline** | A chronological, searchable feed of all past journal entries |
+| ** AI-Powered Insights** | LLM-generated reflections, patterns, and summaries over your journaling history |
+| ** Theming** | Dark / Light mode toggle with persistent user preferences |
+| ** Account Settings** | Profile management, password updates, and data export |
+| ** Auth with Supabase** | Secure sign-up, login, and session management via Supabase Auth |
+| ** Smooth Animations** | Page transitions, micro-interactions, and a branded animated logo (Framer Motion + GSAP) |
 
 ---
 
-## 🚀 Tech Stack
+##  Tech Stack
 
 ### Frontend
 | Technology | Purpose |
@@ -66,7 +66,7 @@ Lumina is a full-stack, single-page application designed to be a **distraction-f
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```text
 Mental-health-journal/
@@ -118,7 +118,7 @@ Mental-health-journal/
 
 ---
 
-## ⚙️ Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -212,7 +212,7 @@ The API will be running at **http://localhost:8000**. Visit **http://localhost:8
 
 ---
 
-## 🧩 API Endpoints
+##  API Endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -226,6 +226,6 @@ The API will be running at **http://localhost:8000**. Visit **http://localhost:8
 
 ---
 
-## 📄 License
+##  License
 
 This application is fully open source.
