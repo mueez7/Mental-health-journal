@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import LuminaGif from '../assets/Lumina.gif';
 import Logo from '../assets/Logo.svg';
+import SplitText from './SplitText';
+import LightRays from './LightRays';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 
 const Login = ({ onLogin }) => {
     const [loading, setLoading] = useState(false);
@@ -9,6 +14,39 @@ const Login = ({ onLogin }) => {
     const [displayName, setDisplayName] = useState('');
     const [error, setError] = useState(null);
     const [isSignUp, setIsSignUp] = useState(false);
+    const [showGif, setShowGif] = useState(true);
+    const containerRef = useRef(null);
+
+    useGSAP(() => {
+        // Left capsule animation
+        gsap.from('.left-capsule', {
+            x: -50,
+            opacity: 0,
+            duration: 1.5,
+            ease: 'power3.out'
+        });
+
+        // Right form elements stagger
+        gsap.from('.right-form > *', {
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: 'power3.out',
+            delay: 0.5
+        });
+    }, { scope: containerRef });
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowGif(false);
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    const handleAnimationComplete = () => {
+        console.log('All letters have animated!');
+    };
 
     const handleAuth = async (e) => {
         e.preventDefault();
@@ -44,23 +82,63 @@ const Login = ({ onLogin }) => {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row h-screen w-full bg-lumina-bg">
+        <div ref={containerRef} className="flex flex-col lg:flex-row h-screen w-full bg-white">
             {/* Left Side */}
-            <div className="flex-1 bg-lumina-dark flex flex-col items-center justify-center p-8 text-white relative">
-                <div className="max-w-md text-center">
-                    <div className="flex justify-center mb-6">
-                        <img src={Logo} alt="Lumina Logo" className="h-16 object-contain" />
+            <div className="left-capsule hidden lg:flex lg:w-[55%] xl:w-[60%] p-3 lg:p-5">
+                <div className="w-full h-full bg-lumina-dark rounded-[2.5rem] flex flex-col items-center justify-center relative overflow-hidden">
+                    {/* WebGL Light Rays background */}
+                    <LightRays
+                        raysOrigin="top-center"
+                        raysColor="#ffffff"
+                        raysSpeed={1}
+                        lightSpread={0.5}
+                        rayLength={3}
+                        followMouse={true}
+                        mouseInfluence={0.1}
+                        noiseAmount={0}
+                        distortion={0}
+                        pulsating={false}
+                        fadeDistance={1}
+                        saturation={1}
+                    />
+                    <div className="max-w-md text-center z-10 flex flex-col items-center">
+                        <div className="flex justify-center mb-6 h-[5rem] items-center">
+                            {showGif ? (
+                                <img
+                                    src={LuminaGif}
+                                    alt="Lumina Logo Animation"
+                                    className="h-25 xl:h-33 object-contain"
+                                />
+                            ) : (
+                                <img
+                                    src={Logo}
+                                    alt="Lumina Logo"
+                                    className="h-16 xl:h-20 object-contain"
+                                />
+                            )}
+                        </div>
+                        <SplitText
+                            text="Your natural language path to self-reflection and mental clarity."
+                            className="text-[#a0a0a0] text-lg font-light leading-relaxed px-4 pt-4 text-center mt-2 max-w-md"
+                            delay={18}
+                            duration={0.55}
+                            ease="power3.out"
+                            splitType="chars"
+                            from={{ opacity: 0, y: 18 }}
+                            to={{ opacity: 1, y: 0 }}
+                            threshold={0.1}
+                            rootMargin="0px"
+                            textAlign="center"
+                            onLetterAnimationComplete={handleAnimationComplete}
+                            showCallback
+                        />
                     </div>
-                    <p className="text-[#a0a0a0] text-lg font-light leading-relaxed">
-                        Your natural language path to self-reflection and mental clarity.
-                    </p>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
             </div>
 
             {/* Right Side */}
-            <div className="flex-1 flex items-center justify-center p-8 lg:p-12 bg-white shadow-2xl z-10">
-                <div className="w-full max-w-sm space-y-8">
+            <div className="flex-1 flex items-center justify-center p-8 lg:p-12 xl:p-16 bg-white z-10">
+                <div className="w-full max-w-sm space-y-8 right-form">
                     <div>
                         <h2 className="text-3xl font-semibold text-lumina-dark tracking-tight">
                             {isSignUp ? 'Create an account' : 'Welcome back'}

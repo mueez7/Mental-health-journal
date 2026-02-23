@@ -18,7 +18,7 @@ Ensure all fields are present and values are realistic, grounded, and internally
 {
     "title": "A concise, meaningful 2-4 word title that captures the emotional core",
     "tags": ["Up to 3 relevant emotion or mental state tags (e.g., anxiety, burnout, hope, loneliness)"],
-    "suggestion": "One or two sentences of gentle, actionable, and emotionally supportive advice based only on the journal content",
+    "suggestion": "two or three sentences of gentle, actionable, and emotionally supportive advice based only on the journal content",
     "type": "deep" if the entry reflects extended reflection, complexity, or emotional depth, otherwise "quick",
     "mood_score": integer between 1 and 10 where 1 = very low mood and 10 = very positive mood,
     "stress_score": integer between 1 and 10 where 1 = very calm and 10 = extremely stressed
