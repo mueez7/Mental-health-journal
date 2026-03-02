@@ -40,7 +40,17 @@ Journal Entry:
             response_format={"type": "json_object"},
         )
         content = response.choices[0].message.content
-        return json.loads(content)
+        if content is None:
+            raise ValueError("LLM returned empty content")
+        result = json.loads(content)
+        return {
+            "title":       result.get("title") or "Journal Entry",
+            "tags":        result.get("tags") or ["Reflective"],
+            "suggestion":  result.get("suggestion") or "Take a moment to breathe and reflect.",
+            "type":        result.get("type") or ("deep" if len(text) >= 200 else "quick"),
+            "mood_score":  result.get("mood_score") or 5,
+            "stress_score":result.get("stress_score") or 5,
+        }
     except Exception as e:
         print(f"Error calling LLM: {e}")
         return {
