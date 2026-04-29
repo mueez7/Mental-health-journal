@@ -169,7 +169,7 @@ const Login = ({ onLogin }) => {
                             </div>
                         )}
                         <div className="space-y-1">
-                            <label className="text-sm font-medium text-gray-700">Email address</label>
+                            <label className="text-sm font-medium text-gray-700">Email </label>
                             <input
                                 type="email"
                                 placeholder="jordan@example.com"
