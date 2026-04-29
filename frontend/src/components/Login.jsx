@@ -6,6 +6,7 @@ import SplitText from './SplitText';
 import LightRays from './LightRays';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { Eye, EyeOff } from 'lucide-react';
 
 const Login = ({ onLogin }) => {
     const [loading, setLoading] = useState(false);
@@ -15,6 +16,7 @@ const Login = ({ onLogin }) => {
     const [error, setError] = useState(null);
     const [isSignUp, setIsSignUp] = useState(false);
     const [showGif, setShowGif] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
     const containerRef = useRef(null);
 
     useGSAP(() => {
@@ -179,14 +181,23 @@ const Login = ({ onLogin }) => {
                         </div>
                         <div className="space-y-1">
                             <label className="text-sm font-medium text-gray-700">Password</label>
-                            <input
-                                type="password"
-                                placeholder="••••••••"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-lumina-blue-border focus:border-transparent transition-all"
-                                required
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="••••••••"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-lumina-blue-border focus:border-transparent transition-all pr-12"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1"
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
+                            </div>
                         </div>
                         <button
                             type="submit"
